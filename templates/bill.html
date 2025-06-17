@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Order Summary - Andhra Cuisine by Tigers Truck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <style>
+        .bill-container {
+            max-width: 700px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            font-family: var(--font-secondary);
+        }
+        .bill-header {
+            font-family: var(--font-primary);
+            font-size: 2.5rem;
+            color: var(--dark-color);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .order-info {
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            color: #555;
+        }
+        .order-items {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+        .order-items th, .order-items td {
+            border: 1px solid #ddd;
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        .order-items th {
+            background-color: var(--light-color);
+            font-weight: 600;
+        }
+        .total-row td {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+        .thank-you {
+            text-align: center;
+            font-size: 1.3rem;
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+        .back-home {
+            display: block;
+            margin: 2rem auto 0 auto;
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            width: fit-content;
+            transition: background-color 0.3s;
+        }
+        .back-home:hover {
+            background-color: var(--dark-color);
+        }
+    </style>
+</head>
+<body>
+    <header class="hero" style="background-image: url('https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
+        <div class="hero-overlay">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="/static/images/logo.png" alt="Andhra Cuisine by Tigers Truck" />
+                </div>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/menu">Menu</a></li>
+                    <li><a href="/cart" class="btn btn-outline">Cart</a></li>
+                    <li><a href="/login" class="btn btn-outline">Login</a></li>
+                </ul>
+            </nav>
+            <div class="hero-content">
+                <h1>Order Summary</h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="bill-container">
+        <div class="bill-header">Thank you for your order, {{ order.username }}!</div>
+        <div class="order-info">
+            <p><strong>Order ID:</strong> {{ order.order_id }}</p>
+            <p><strong>Order Date:</strong> {{ order.order_date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            <p><strong>Status:</strong> {{ order.status }}</p>
+        </div>
+        <table class="order-items">
+            <thead>
+                <tr>
+                    <th>Dish</th>
+                    <th>Quantity</th>
+                    <th>Price (₹)</th>
+                    <th>Total (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.price }}</td>
+                    <td>{{ item.price * item.quantity }}</td>
+                </tr>
+                {% endfor %}
+                <tr class="total-row">
+                    <td colspan="3" style="text-align:right;">Total Amount</td>
+                    <td>₹{{ order.total_amount }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="thank-you">We appreciate your business and hope you enjoy your meal!</div>
+        <a href="/" class="back-home">Back to Home</a>
+    </main>
+</body>
+</html>

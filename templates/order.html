@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Your Cart - Andhra Cuisine by Tigers Truck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <style>
+        .cart-container {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .cart-header {
+            font-family: var(--font-primary);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+            text-align: center;
+        }
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 1rem;
+        }
+        .cart-item img {
+            width: 120px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .item-info {
+            flex-grow: 1;
+        }
+        .item-name {
+            font-family: var(--font-primary);
+            font-size: 1.2rem;
+            margin: 0 0 0.3rem 0;
+            color: var(--dark-color);
+        }
+        .item-quantity {
+            font-size: 1rem;
+            color: #555;
+        }
+        .item-price {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-left: 1rem;
+        }
+        .remove-btn {
+            background: transparent;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .remove-btn:hover {
+            color: var(--dark-color);
+        }
+        .checkout-btn {
+            display: block;
+            margin: 2rem auto 0 auto;
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            text-align: center;
+            width: fit-content;
+        }
+        .checkout-btn:hover {
+            background-color: var(--dark-color);
+        }
+        .empty-cart {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #777;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="hero" style="background-image: url('https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
+        <div class="hero-overlay">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="/static/images/logo.png" alt="Andhra Cuisine by Tigers Truck" />
+                </div>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/menu">Menu</a></li>
+                    <li><a href="/cart" class="btn btn-outline">Cart</a></li>
+                    <li><a href="/login" class="btn btn-outline">Login</a></li>
+                </ul>
+            </nav>
+            <div class="hero-content">
+                <h1>Your Cart</h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="cart-container">
+        {% if cart_items %}
+        <div class="cart-header">Items in your cart</div>
+        <div class="cart-items">
+            {% for item in cart_items %}
+            <div class="cart-item" data-item-id="{{ item.item_id }}">
+                <img src="{{ item.image_url }}" alt="{{ item.name }}" />
+                <div class="item-info">
+                    <h3 class="item-name">{{ item.name }}</h3>
+                    <div class="item-quantity">Quantity: {{ item.quantity }}</div>
+                </div>
+                <div class="item-price">₹{{ item.price * item.quantity }}</div>
+                <button class="remove-btn" onclick="removeFromCart({{ item.item_id }})" title="Remove item">&times;</button>
+            </div>
+            {% endfor %}
+        </div>
+        <a href="/checkout" class="checkout-btn">Proceed to Checkout</a>
+        {% else %}
+        <div class="empty-cart">Your cart is empty. <a href="/menu">Browse menu</a></div>
+        {% endif %}
+    </main>
+
+    <script>
+        function removeFromCart(itemId) {
+            fetch('/remove_from_cart/' + itemId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }).then(response => response.json())
+            .then(data => {
+                if (data.cart) {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

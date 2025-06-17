@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Checkout - Andhra Cuisine by Tigers Truck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <style>
+        .checkout-container {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .checkout-header {
+            font-family: var(--font-primary);
+            font-size: 2.5rem;
+            color: var(--dark-color);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .item-list {
+            margin-bottom: 2rem;
+        }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+        .item-name {
+            font-size: 1.2rem;
+            color: var(--dark-color);
+        }
+        .item-price {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        .total-amount {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            text-align: right;
+            margin-top: 1rem;
+        }
+        .checkout-btn {
+            display: block;
+            margin: 2rem auto;
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            text-align: center;
+            width: fit-content;
+        }
+        .checkout-btn:hover {
+            background-color: var(--dark-color);
+        }
+    </style>
+</head>
+<body>
+    <header class="hero" style="background-image: url('https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
+        <div class="hero-overlay">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="/static/images/logo.png" alt="Andhra Cuisine by Tigers Truck" />
+                </div>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/menu">Menu</a></li>
+                    <li><a href="/cart" class="btn btn-outline">Cart</a></li>
+                    <li><a href="/logout" class="btn btn-outline">Logout</a></li>
+                </ul>
+            </nav>
+            <div class="hero-content">
+                <h1>Checkout</h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="checkout-container">
+        <div class="checkout-header">Review Your Order</div>
+        <div class="item-list">
+            {% for item in items %}
+            <div class="item">
+                <span class="item-name">{{ item.name }} (x{{ item.quantity }})</span>
+                <span class="item-price">₹{{ item.price * item.quantity }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="total-amount">Total Amount: ₹{{ total }}</div>
+        <form method="POST">
+            <button type="submit" class="checkout-btn">Confirm Order</button>
+        </form>
+    </main>
+</body>
+</html>

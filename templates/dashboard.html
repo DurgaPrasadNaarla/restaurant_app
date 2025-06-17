@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard - Andhra Cuisine by Tigers Truck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <style>
+        .dashboard-container {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            font-family: var(--font-secondary);
+        }
+        .dashboard-header {
+            font-family: var(--font-primary);
+            font-size: 2.5rem;
+            color: var(--dark-color);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .orders-table, .reviews-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 3rem;
+        }
+        .orders-table th, .orders-table td,
+        .reviews-table th, .reviews-table td {
+            border: 1px solid #ddd;
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        .orders-table th, .reviews-table th {
+            background-color: var(--light-color);
+            font-weight: 600;
+        }
+        .status-pending {
+            color: #d32f2f;
+            font-weight: 600;
+        }
+        .status-completed {
+            color: #388e3c;
+            font-weight: 600;
+        }
+        .no-data {
+            text-align: center;
+            color: #777;
+            font-style: italic;
+            padding: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="hero" style="background-image: url('https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
+        <div class="hero-overlay">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="/static/images/logo.png" alt="Andhra Cuisine by Tigers Truck" />
+                </div>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/menu">Menu</a></li>
+                    <li><a href="/cart" class="btn btn-outline">Cart</a></li>
+                    <li><a href="/logout" class="btn btn-outline">Logout</a></li>
+                </ul>
+            </nav>
+            <div class="hero-content">
+                <h1>Your Dashboard</h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <section>
+            <h2>My Orders</h2>
+            {% if orders %}
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Total Amount (₹)</th>
+                        <th>Status</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{ order.order_id }}</td>
+                        <td>{{ order.order_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>{{ order.total_amount }}</td>
+                        <td class="status-{{ order.status|lower }}">{{ order.status }}</td>
+                        <td><a href="{{ url_for('bill', order_id=order.order_id) }}">View</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="no-data">You have no orders yet.</div>
+            {% endif %}
+        </section>
+
+        <section>
+            <h2>My Reviews</h2>
+            {% if reviews %}
+            <table class="reviews-table">
+                <thead>
+                    <tr>
+                        <th>Rating</th>
+                        <th>Comment</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for review in reviews %}
+                    <tr>
+                        <td>{{ review.rating }} / 5</td>
+                        <td>{{ review.comment }}</td>
+                        <td>{{ review.review_date.strftime('%Y-%m-%d') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="no-data">You have not submitted any reviews yet.</div>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>

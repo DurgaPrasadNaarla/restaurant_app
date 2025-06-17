@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Menu - Andhra Cuisine by Tigers Truck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+    <header class="hero" style="background-image: url('https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
+        <div class="hero-overlay">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="/static/images/logo.png" alt="Andhra Cuisine by Tigers Truck" />
+                </div>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/menu" class="active">Menu</a></li>
+                    <li><a href="/cart" class="btn btn-outline">Cart</a></li>
+                    <li><a href="/login" class="btn btn-outline">Login</a></li>
+                </ul>
+            </nav>
+            <div class="hero-content">
+                <h1>Our Menu</h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="menu-container">
+        <h2 class="section-title">Available Dishes</h2>
+        <div class="menu-items">
+            {% for category, items in menu_by_category.items() %}
+            <h3 class="category-title">{{ category }}</h3>
+            <div class="dish-grid">
+                {% for item in items %}
+                <div class="dish-card">
+                    <div class="dish-image" style="background-image: url('{{ item.image_url }}')"></div>
+                    <div class="dish-info">
+                        <h3>{{ item.name }}</h3>
+                        <p>{{ item.description }}</p>
+                        <span class="price">₹{{ item.price }}</span>
+                        <button class="btn btn-primary" onclick="addToCart('{{ item.item_id }}')">Add to Cart</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
